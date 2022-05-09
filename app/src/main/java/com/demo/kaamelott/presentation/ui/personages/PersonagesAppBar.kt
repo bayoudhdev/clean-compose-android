@@ -8,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import com.demo.kaamelott.R
-import com.demo.kaamelott.presentation.components.NotAvailableFeaturePopup
+import com.demo.kaamelott.presentation.components.NotAvailableFeaturePopupDialog
 
 @Composable
 fun PersonagesAppBar(
@@ -30,7 +29,7 @@ fun PersonagesAppBar(
 
     var showUnimplementedActionDialog by rememberSaveable { mutableStateOf(false) }
     if (showUnimplementedActionDialog) {
-        NotAvailableFeaturePopup(message = R.string.functionality_not_available) {
+        NotAvailableFeaturePopupDialog(message = R.string.functionality_not_available) {
             showUnimplementedActionDialog = false
         }
     }

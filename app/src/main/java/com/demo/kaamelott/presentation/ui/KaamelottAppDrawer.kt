@@ -22,7 +22,6 @@ import com.demo.kaamelott.presentation.navigation.KaamelottDestinations
 fun KaamelottAppDrawer(
     currentRoute: String,
     navigateToHome: () -> Unit,
-    navigateToQuotes: () -> Unit,
     navigateToPersonages: () -> Unit,
     closeDrawer: () -> Unit,
     modifier: Modifier = Modifier
@@ -45,15 +44,6 @@ fun KaamelottAppDrawer(
             isSelected = currentRoute == KaamelottDestinations.PERSONAGES_ROUTE,
             action = {
                 navigateToPersonages()
-                closeDrawer()
-            }
-        )
-        SelectedButton(
-            icon = Icons.Filled.FormatQuote,
-            label = stringResource(id = R.string.quotes_title),
-            isSelected = currentRoute == KaamelottDestinations.QUOTES_ROUTE,
-            action = {
-                navigateToQuotes()
                 closeDrawer()
             }
         )

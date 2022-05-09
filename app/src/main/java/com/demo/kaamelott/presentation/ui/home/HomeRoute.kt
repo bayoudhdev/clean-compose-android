@@ -4,51 +4,34 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.demo.kaamelott.core.utils.rememberStateWithLifecycle
+import com.demo.kaamelott.presentation.models.Quote
 
 @Composable
 fun HomeRoute(
     homeViewModel: HomeViewModel,
-    navigateToQuote: (Pair<String, String>) -> Unit,
+    navigateToQuote: (Quote) -> Unit,
     navigateToPersonages: (String) -> Unit,
     openDrawer: () -> Unit,
     scaffoldState: ScaffoldState = rememberScaffoldState()
 ) {
-    val uiState by homeViewModel.uiState.collectAsState()
-    HomeRoute(
+    val uiState by rememberStateWithLifecycle(homeViewModel.uiState)
+    val homeLazyListState = rememberLazyListState()
+
+    HomeScreen(
         uiState = uiState,
-        navigateToQuote = navigateToQuote,
-        navigateToPersonages = navigateToPersonages,
         onRefreshHome = {
+            //TODO WE CAN USE COMBINE FLOW
             homeViewModel.fetchRandomQuote()
             homeViewModel.fetchRandomQuotes()
         },
         onErrorDismiss = homeViewModel::observeError,
+        navigateToQuote = navigateToQuote,
+        navigateToPersonages = navigateToPersonages,
         openDrawer = openDrawer,
+        homeLazyListState = homeLazyListState,
         scaffoldState = scaffoldState,
     )
 }
 
-@Composable
-fun HomeRoute(
-    uiState: HomeUiState,
-    onRefreshHome: () -> Unit,
-    onErrorDismiss: (Long) -> Unit,
-    navigateToQuote: (Pair<String, String>) -> Unit,
-    navigateToPersonages: (String) -> Unit,
-    openDrawer: () -> Unit,
-    scaffoldState: ScaffoldState
-) {
-    val homeListLazyListState = rememberLazyListState()
-    HomeScreen(
-        uiState = uiState,
-        onRefreshHome = onRefreshHome,
-        onErrorDismiss = onErrorDismiss,
-        navigateToQuote = navigateToQuote,
-        navigateToPersonages = navigateToPersonages,
-        openDrawer = openDrawer,
-        homeListLazyListState = homeListLazyListState,
-        scaffoldState = scaffoldState,
-    )
-}

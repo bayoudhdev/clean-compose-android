@@ -21,15 +21,6 @@ class KaamelottNavigationActions(navController: NavHostController) {
             restoreState = true
         }
     }
-    val navigateToQuotes: () -> Unit = {
-        navController.navigate(KaamelottDestinations.QUOTES_ROUTE) {
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
-            }
-            launchSingleTop = true
-            restoreState = true
-        }
-    }
     val navigateToPersonages: () -> Unit = {
         navController.navigate("${KaamelottDestinations.PERSONAGES_ROUTE}/-1") {
             popUpTo(navController.graph.findStartDestination().id) {

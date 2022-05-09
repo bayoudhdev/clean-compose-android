@@ -21,51 +21,6 @@ interface QuotesService {
     suspend fun getRandomQuote(): Response<RandomQuoteEntity>
 
     /**
-     * Get a random quote by personage
-     *
-     * Responses:
-     *  - 200: Request is successful, response contains the random quote
-     *  - 404: Unrecoverable error from the service
-     *
-     * @param personage name of the personage in the book
-     * @return [QuoteEntity]
-     */
-    @GET("/api/all/personnage/{personage}")
-    suspend fun getRandomQuoteByPersonage(
-        @Path("personage") personage: String
-    ): Response<QuoteEntity>
-
-    /**
-     * Get all quotes by personage
-     *
-     * Responses:
-     *  - 200: Request is successful, response contains all quotes
-     *  - 404: Unrecoverable error from the service
-     *
-     * @param personage name of the personage in the book
-     * @return [QuotesEntity]
-     */
-    @GET("/api/all/personnage/{personage}")
-    suspend fun getAllQuotesByPersonage(
-        @Path("personage") personage: String
-    ): Response<QuotesEntity>
-
-    /**
-     * Get a random quote by book
-     *
-     * Responses:
-     *  - 200: Request is successful, response contains the random quote
-     *  - 404: Unrecoverable error from the service
-     *
-     * @param book a book number
-     * @return [QuoteEntity]
-     */
-    @GET("/api/random/livre/{book}")
-    suspend fun getRandomQuoteByBook(
-        @Path("book") book: String
-    ): Response<QuoteEntity>
-
-    /**
      * Get all quotes by book
      *
      * Responses:
@@ -92,8 +47,23 @@ interface QuotesService {
      * @return [QuotesEntity]
      */
     @GET("/api/all/livre/{book}/personnage/{personage}")
-    suspend fun getCharacterQuoteByBook(
-        @Path("book") book: Int,
+    suspend fun getQuotesByBookAndPersonage(
+        @Path("book") book: String,
+        @Path("personage") personage: String
+    ): Response<QuotesEntity>
+
+    /**
+     * Get all quotes by personage
+     *
+     * Responses:
+     *  - 200: Request is successful, response contains the all quotes
+     *  - 404: Unrecoverable error from the service
+     *
+     * @param personage name of the personage in the book
+     * @return [QuotesEntity]
+     */
+    @GET("/api/all/personnage/{personage}")
+    suspend fun getQuotesByPersonage(
         @Path("personage") personage: String
     ): Response<QuotesEntity>
 }

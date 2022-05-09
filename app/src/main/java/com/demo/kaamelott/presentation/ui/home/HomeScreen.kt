@@ -18,12 +18,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.demo.kaamelott.R
 import com.demo.kaamelott.core.utils.isScrolled
 import com.demo.kaamelott.presentation.components.LoadingComponent
-import com.demo.kaamelott.presentation.components.NotAvailableFeaturePopup
+import com.demo.kaamelott.presentation.components.NotAvailableFeaturePopupDialog
 import com.demo.kaamelott.presentation.components.SnackbarHostComponent
 import com.demo.kaamelott.presentation.models.BookSeason
 import com.demo.kaamelott.presentation.models.Quote
@@ -36,10 +35,10 @@ fun HomeScreen(
     uiState: HomeUiState,
     onRefreshHome: () -> Unit,
     onErrorDismiss: (Long) -> Unit,
-    navigateToQuote: (Pair<String, String>) -> Unit,
+    navigateToQuote: (Quote) -> Unit,
     navigateToPersonages: (String) -> Unit,
     openDrawer: () -> Unit,
-    homeListLazyListState: LazyListState,
+    homeLazyListState: LazyListState,
     scaffoldState: ScaffoldState,
     modifier: Modifier = Modifier,
 ) {
@@ -48,13 +47,13 @@ fun HomeScreen(
         onRefreshHome = onRefreshHome,
         onErrorDismiss = onErrorDismiss,
         openDrawer = openDrawer,
-        homeListLazyListState = homeListLazyListState,
+        homeLazyListState = homeLazyListState,
         scaffoldState = scaffoldState,
         modifier = modifier
     ) { hasRandomQuote, contentModifier ->
         HomeList(
             modifier = contentModifier,
-            state = homeListLazyListState,
+            state = homeLazyListState,
             quote = hasRandomQuote.randomQuote,
             navigateToQuote = navigateToQuote,
             navigateToPersonages = navigateToPersonages,
@@ -69,7 +68,7 @@ private fun HomeScreenWithList(
     onRefreshHome: () -> Unit,
     onErrorDismiss: (Long) -> Unit,
     openDrawer: () -> Unit,
-    homeListLazyListState: LazyListState,
+    homeLazyListState: LazyListState,
     scaffoldState: ScaffoldState,
     modifier: Modifier = Modifier,
     hasRandomQuote: @Composable (
@@ -83,7 +82,7 @@ private fun HomeScreenWithList(
         topBar = {
             HomeTopAppBar(
                 openDrawer = openDrawer,
-                elevation = if (!homeListLazyListState.isScrolled) 0.dp else 4.dp
+                elevation = if (!homeLazyListState.isScrolled) 0.dp else 4.dp
             )
         },
         modifier = modifier
@@ -196,7 +195,7 @@ private fun HomeLoadingContentScreen(
 private fun HomeList(
     quote: Quote,
     quotes: List<Quote>,
-    navigateToQuote: (Pair<String, String>) -> Unit,
+    navigateToQuote: (Quote) -> Unit,
     navigateToPersonages: (String) -> Unit,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
@@ -214,7 +213,7 @@ private fun HomeList(
 @Composable
 private fun ListQuotesSection(
     quotes: List<Quote>,
-    navigateToQuote: (Pair<String, String>) -> Unit
+    navigateToQuote: (Quote) -> Unit
 ) {
     Column {
         Text(
@@ -238,20 +237,17 @@ private fun ListQuotesSection(
 @Composable
 fun RandomQuotes(
     quote: Quote,
-    navigateToQuote: (Pair<String, String>) -> Unit
+    navigateToQuote: (Quote) -> Unit
 ) {
     var openDialog by remember { mutableStateOf(false) }
 
     Row(
         Modifier
-            .clickable(onClick = {
-                navigateToQuote(
-                    Pair(
-                        quote.metaData.season,
-                        quote.metaData.personage
-                    )
-                )
-            })
+            .clickable(
+                onClick = {
+                    navigateToQuote(quote)
+                }
+            )
     ) {
         Image(
             painter = painterResource(R.drawable.citations),
@@ -289,7 +285,7 @@ fun RandomQuotes(
         }
     }
     if (openDialog) {
-        NotAvailableFeaturePopup(message = R.string.functionality_not_available) {
+        NotAvailableFeaturePopupDialog(message = R.string.functionality_not_available) {
             openDialog = false
         }
     }
@@ -319,7 +315,7 @@ fun SeasonAndEpisodeSection(
 @Composable
 private fun QuoteOfDaySection(
     quote: Quote,
-    navigateToQuote: (Pair<String, String>) -> Unit
+    navigateToQuote: (Quote) -> Unit
 ) {
     Text(
         modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
@@ -331,10 +327,7 @@ private fun QuoteOfDaySection(
         modifier = Modifier.clickable(
             onClick = {
                 navigateToQuote(
-                    Pair(
-                        quote.metaData.season,
-                        quote.metaData.personage
-                    )
+                    quote
                 )
             }
         )

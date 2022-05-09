@@ -6,4 +6,6 @@ interface QuotesRepository {
 
     suspend fun getRandomQuote(): Result<QuoteDomain>
     suspend fun getRandomQuotes(bookId: String): Result<List<QuoteDomain>>
+    suspend fun getQuotesByBookAndPersonage(bookId: String, personage : String): Result<List<QuoteDomain>>
+    suspend fun getQuotesByPersonage(personage : String): Result<List<QuoteDomain>>
 }

@@ -1,22 +1,20 @@
-package com.demo.kaamelott.presentation.ui.home
+package com.demo.kaamelott.presentation.ui.quotes
 
 import com.demo.kaamelott.presentation.models.ErrorMessage
 import com.demo.kaamelott.presentation.models.Quote
 
-sealed interface HomeUiState {
-
+sealed interface QuotesUiState {
     val isLoading: Boolean
     val errorMessages: List<ErrorMessage>
 
-    data class NoRandomQuote(
+    data class NoQuotes(
         override val isLoading: Boolean,
         override val errorMessages: List<ErrorMessage>,
-    ) : HomeUiState
+    ) : QuotesUiState
 
-    data class HasRandomQuote(
-        val randomQuote: Quote,
-        val randomQuotes: List<Quote>,
+    data class HasQuotes(
+        val quotes: List<Quote>,
         override val isLoading: Boolean,
         override val errorMessages: List<ErrorMessage>,
-    ) : HomeUiState
+    ) : QuotesUiState
 }

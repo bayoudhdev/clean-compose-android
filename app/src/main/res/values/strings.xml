@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Kaamelott</string>
     <!-- Error -->
-    <string name="load_quote_error">Impossible d\'obtenir une citation</string>
-    <string name="load_quotes_error">Impossible d\'obtenir des citations</string>
+    <string name="load_quote_error">Impossible d\'obtenir la citation</string>
+    <string name="load_quotes_error">Impossible d\'obtenir les citations</string>
     <string name="try_again">Réessayer</string>
 
     <!-- Home Screen -->
@@ -21,6 +21,8 @@
 
     <!-- Quotes Screen -->
     <string name="quotes_title">Citations</string>
+    <string name="quote_title">Citation de %s</string>
+    <string name="quote_details">\" %s \"</string>
 
     <!-- Dialog -->
     <string name="close">Fermer</string>

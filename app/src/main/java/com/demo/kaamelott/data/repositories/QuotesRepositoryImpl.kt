@@ -10,5 +10,20 @@ class QuotesRepositoryImpl @Inject constructor(private val quotesDataSource: Quo
 
     override suspend fun getRandomQuote(): Result<QuoteDomain> = quotesDataSource.getRandomQuote()
 
-    override suspend fun getRandomQuotes(bookId: String): Result<List<QuoteDomain>> = quotesDataSource.getRandomQuotes(bookId)
+    override suspend fun getRandomQuotes(bookId: String): Result<List<QuoteDomain>> =
+        quotesDataSource.getRandomQuotes(bookId)
+
+    override suspend fun getQuotesByBookAndPersonage(
+        bookId: String,
+        personage: String
+    ): Result<List<QuoteDomain>> =
+        quotesDataSource.getQuotesByBookAndPersonage(
+            bookId = bookId,
+            personage = personage
+        )
+
+    override suspend fun getQuotesByPersonage(personage: String): Result<List<QuoteDomain>> =
+        quotesDataSource.getQuotesByPersonage(
+            personage = personage
+        )
 }

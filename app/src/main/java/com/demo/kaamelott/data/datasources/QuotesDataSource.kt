@@ -28,4 +28,29 @@ class QuotesDataSource @Inject constructor(private val quotesService: QuotesServ
             Result.failure(Throwable("Can't find quotes in response"))
         }
     }
+
+    suspend fun getQuotesByBookAndPersonage(
+        bookId: String,
+        personage: String
+    ): Result<List<QuoteDomain>> {
+        val response = quotesService.getQuotesByBookAndPersonage(bookId, personage)
+        val quotes = response.body()
+
+        return if (response.isSuccessful && !quotes?.quotes.isNullOrEmpty()) {
+            Result.success(quotes?.quotes?.map { it.toDomain() }.orEmpty())
+        } else {
+            Result.failure(Throwable("Can't find quotes in response"))
+        }
+    }
+
+    suspend fun getQuotesByPersonage(personage: String): Result<List<QuoteDomain>> {
+        val response = quotesService.getQuotesByPersonage(personage)
+        val quotes = response.body()
+
+        return if (response.isSuccessful && !quotes?.quotes.isNullOrEmpty()) {
+            Result.success(quotes?.quotes?.map { it.toDomain() }.orEmpty())
+        } else {
+            Result.failure(Throwable("Can't find quotes in response"))
+        }
+    }
 }

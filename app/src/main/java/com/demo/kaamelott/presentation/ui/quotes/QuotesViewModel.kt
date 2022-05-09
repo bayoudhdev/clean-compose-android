@@ -1,53 +1,45 @@
-package com.demo.kaamelott.presentation.ui.home
+package com.demo.kaamelott.presentation.ui.quotes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.demo.kaamelott.R
-import com.demo.kaamelott.domain.interactors.BookId
-import com.demo.kaamelott.domain.interactors.GetRandomQuoteUseCase
-import com.demo.kaamelott.domain.interactors.GetRandomQuotesUseCase
+import com.demo.kaamelott.domain.interactors.*
 import com.demo.kaamelott.presentation.models.ErrorMessage
 import com.demo.kaamelott.presentation.models.Quote
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 
-private data class HomeViewModelState(
-    val randomQuote: Quote? = null,
-    val randomQuotes: List<Quote> = emptyList(),
+private data class QuotesViewModelState(
+    val quotes: List<Quote> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessages: List<ErrorMessage> = emptyList(),
 ) {
 
-    fun toUiState(): HomeUiState =
-        if (randomQuote == null) {
-            HomeUiState.NoRandomQuote(
+    fun toUiState(): QuotesUiState =
+        if (quotes.isNullOrEmpty()) {
+            QuotesUiState.NoQuotes(
                 isLoading = isLoading,
                 errorMessages = errorMessages,
             )
         } else {
-            HomeUiState.HasRandomQuote(
+            QuotesUiState.HasQuotes(
                 errorMessages = errorMessages,
                 isLoading = isLoading,
-                randomQuote = randomQuote,
-                randomQuotes = randomQuotes
+                quotes = quotes
             )
         }
 }
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val getRandomQuoteUseCase: GetRandomQuoteUseCase,
-    private val getRandomQuotesUseCase: GetRandomQuotesUseCase
+class QuotesViewModel @Inject constructor(
+    private val getQuotesByBookAndPersonageUseCase: GetQuotesByBookAndPersonageUseCase,
+    private val getQuotesByPersonageUseCase: GetQuotesByPersonageUseCase
 ) : ViewModel() {
 
-    private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = true))
+    private val viewModelState = MutableStateFlow(QuotesViewModelState(isLoading = true))
 
     // UI state exposed to the UI
     val uiState = viewModelState
@@ -58,24 +50,39 @@ class HomeViewModel @Inject constructor(
             viewModelState.value.toUiState()
         )
 
-    init {
-        fetchRandomQuote()
-        fetchRandomQuotes()
+    fun fetchQuotes(
+        bookId: BookId,
+        personage: Personage
+    ) {
+        viewModelState.update { it.copy(isLoading = true) }
+        if (bookId.id != "-1") {
+            fetchQuotesByBookAndPersonage(
+                bookId = bookId,
+                personage = personage
+            )
+        } else {
+            fetchQuotesByPersonage(personage = personage)
+        }
     }
 
-    fun fetchRandomQuote() {
-        viewModelState.update { it.copy(isLoading = true) }
+    private fun fetchQuotesByPersonage(
+        personage: Personage
+    ) {
         viewModelScope.launch {
-            val result = getRandomQuoteUseCase(Unit)
+            val result = getQuotesByPersonageUseCase(personage)
+
             viewModelState.update { state ->
                 result.fold(
                     onSuccess = {
-                        state.copy(randomQuote = it.getOrNull(), isLoading = false)
+                        state.copy(
+                            quotes = it.getOrNull().orEmpty(),
+                            isLoading = false
+                        )
                     },
                     onFailure = {
                         val errorMessages = state.errorMessages + ErrorMessage(
                             id = UUID.randomUUID().mostSignificantBits,
-                            messageId = R.string.load_quote_error
+                            messageId = R.string.load_quotes_error
                         )
                         state.copy(errorMessages = errorMessages, isLoading = false)
                     }
@@ -84,15 +91,22 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun fetchRandomQuotes() {
-        viewModelState.update { it.copy(isLoading = true) }
+    private fun fetchQuotesByBookAndPersonage(
+        bookId: BookId,
+        personage: Personage
+    ) {
         viewModelScope.launch {
-            val result = getRandomQuotesUseCase(BookId((1..6).random().toString()))
+            val result = getQuotesByBookAndPersonageUseCase(
+                GetQuotesByBookAndPersonageUseCase.Params(
+                    bookId = bookId,
+                    personage = personage
+                )
+            )
             viewModelState.update { state ->
                 result.fold(
                     onSuccess = {
                         state.copy(
-                            randomQuotes = it.getOrNull().orEmpty().take(3),
+                            quotes = it.getOrNull().orEmpty(),
                             isLoading = false
                         )
                     },

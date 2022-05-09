@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -25,19 +26,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.unit.dp
 import com.demo.kaamelott.R
+import com.demo.kaamelott.core.utils.isScrolled
 
 @Composable
 fun PersonagesScreen(
-    bookID: Int? = -1,
     onClickItem: (String) -> Unit,
     onBackPressed: () -> Unit,
-    scaffoldState: ScaffoldState
+    scaffoldState: ScaffoldState,
+    personageLazyListState: LazyListState,
 ) {
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             PersonagesAppBar(
-                elevation = 0.dp,
+                elevation = if (!personageLazyListState.isScrolled) 0.dp else 4.dp,
                 onBackPressed = onBackPressed
             )
         }
@@ -84,7 +86,7 @@ fun PersonageItem(
                 text = name,
                 modifier = Modifier
                     .padding(16.dp)
-                    .weight(1f), // Break line if the title is too long
+                    .weight(1f),
                 style = MaterialTheme.typography.subtitle1
             )
             Spacer(Modifier.weight(0.01f))

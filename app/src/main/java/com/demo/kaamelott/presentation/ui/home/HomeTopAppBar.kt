@@ -11,16 +11,29 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.demo.kaamelott.R
 import com.demo.kaamelott.presentation.components.KaamelottIcon
+import com.demo.kaamelott.presentation.components.NotAvailableFeaturePopupDialog
 
 @Composable
 fun HomeTopAppBar(
     elevation: Dp,
     openDrawer: () -> Unit
 ) {
+    var showUnimplementedActionDialog by rememberSaveable { mutableStateOf(false) }
+    if (showUnimplementedActionDialog) {
+        NotAvailableFeaturePopupDialog(message = R.string.functionality_not_available) {
+            showUnimplementedActionDialog = false
+        }
+    }
+
     TopAppBar(
         title = {
             KaamelottIcon(
@@ -40,7 +53,7 @@ fun HomeTopAppBar(
             }
         },
         actions = {
-            IconButton(onClick = { /* TODO: Open favorites */ }) {
+            IconButton(onClick = { showUnimplementedActionDialog = true }) {
                 Icon(
                     imageVector = Icons.Filled.Favorite,
                     contentDescription = null,

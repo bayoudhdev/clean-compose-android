@@ -48,7 +48,6 @@ fun KaamelottApp() {
                     currentRoute = currentRoute,
                     navigateToHome = navigationActions.navigateToHome,
                     navigateToPersonages = navigationActions.navigateToPersonages,
-                    navigateToQuotes = navigationActions.navigateToQuotes,
                     closeDrawer = { coroutineScope.launch { sizeAwareDrawerState.close() } },
                     modifier = Modifier
                         .padding(bottom = 56.dp)
@@ -57,7 +56,7 @@ fun KaamelottApp() {
                 )
             },
             drawerState = sizeAwareDrawerState,
-            gesturesEnabled = true
+            gesturesEnabled = false
         ) {
             KaamelottNavGraph(
                 modifier = Modifier
