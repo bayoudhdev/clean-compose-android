@@ -17,8 +17,9 @@ fun HomeRoute(
     HomeRoute(
         uiState = uiState,
         navigateToQuotes = { homeViewModel.navigateToQuotes(it.first, it.second) },
-        onRefreshQuote = { homeViewModel.fetchRandomQuote() },
-        onErrorDismiss = { homeViewModel.observeError(it) },
+        navigateToPersonages = homeViewModel::navigateToPersonages,
+        onRefreshQuote = homeViewModel::fetchRandomQuote,
+        onErrorDismiss = homeViewModel::observeError,
         openDrawer = openDrawer,
         scaffoldState = scaffoldState,
     )
@@ -27,18 +28,20 @@ fun HomeRoute(
 @Composable
 fun HomeRoute(
     uiState: HomeUiState,
-    navigateToQuotes: (Pair<String, String>) -> Unit,
     onRefreshQuote: () -> Unit,
     onErrorDismiss: (Long) -> Unit,
+    navigateToQuotes: (Pair<String, String>) -> Unit,
+    navigateToPersonages: (String) -> Unit,
     openDrawer: () -> Unit,
     scaffoldState: ScaffoldState
 ) {
     val homeListLazyListState = rememberLazyListState()
     HomeScreen(
         uiState = uiState,
-        navigateToQuotes = navigateToQuotes,
         onRefreshQuote = onRefreshQuote,
         onErrorDismiss = onErrorDismiss,
+        navigateToQuotes = navigateToQuotes,
+        navigateToPersonages = navigateToPersonages,
         openDrawer = openDrawer,
         homeListLazyListState = homeListLazyListState,
         scaffoldState = scaffoldState,

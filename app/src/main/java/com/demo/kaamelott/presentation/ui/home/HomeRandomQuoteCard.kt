@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.demo.kaamelott.R
 import com.demo.kaamelott.presentation.models.BookSeason
 import com.demo.kaamelott.presentation.models.Quote
+import com.demo.kaamelott.presentation.models.getKaamelottImageId
 
 @Composable
 fun HomeRandomQuoteCard(
@@ -55,13 +56,15 @@ fun HomeRandomQuoteCard(
             style = typography.h6,
             modifier = Modifier.padding(bottom = 8.dp),
             textAlign = TextAlign.Start,
-            maxLines = 2,
+            maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
         Text(
             text = quote.metaData.author,
             style = typography.subtitle2,
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = 4.dp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Column(horizontalAlignment = Alignment.Start) {
@@ -95,21 +98,10 @@ fun HomeRandomQuoteCard(
                         )
                     ),
                     style = typography.body2,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
             }
         }
-    }
-}
-
-fun BookSeason.getKaamelottImageId(): Int {
-    return when (this) {
-        BookSeason.BOOK_1 -> R.drawable.kaamelott_quote
-        BookSeason.BOOK_2 -> R.drawable.kaamelott_quote_2
-        BookSeason.BOOK_3 -> R.drawable.kaamelott_quote_3
-        BookSeason.BOOK_4 -> R.drawable.kaamelott_quote_4
-        BookSeason.BOOK_5 -> R.drawable.kaamelott_quote_5
-        BookSeason.BOOK_6 -> R.drawable.kaamelott_quote_6
     }
 }

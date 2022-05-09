@@ -87,4 +87,7 @@ class HomeViewModel @Inject constructor(private val getRandomQuoteUseCase: GetRa
 
     fun navigateToQuotes(book: String, personage: String) {
     }
+
+    fun navigateToPersonages(book: String) {
+    }
 }

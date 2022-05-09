@@ -1,12 +1,26 @@
 <resources>
     <string name="app_name">Kaamelott</string>
+    <!-- Error -->
     <string name="load_error">Impossible d\'obtenir une citation</string>
     <string name="try_again">Réessayer</string>
+
+    <!-- Home Screen -->
     <string name="home_top_item_title">Citation de jour</string>
+    <string name="home_title">Accueil</string>
     <string name="home_quote_actor">L\'acteur %1$s et l\'auteur %2$s</string>
     <string name="home_quote_personage">Le personnage de citation est %s</string>
     <string name="home_quote_episode">La saison %1$s et l\'episode %2$s</string>
+    <string name="home_books">Liste de Livres</string>
+    <string name="home_book">Livre %d</string>
+    <string name="home_book_go_to_personages">Voir les personnages</string>
 
+    <!-- Personage Screen -->
+    <string name="personages_title">Personages</string>
+
+    <!-- Quotes Screen -->
+    <string name="quotes_title">Citations</string>
+
+    <!-- List Personages -->
     <string-array name="personage">
         <item>Angharad</item>
         <item>Anna</item>
