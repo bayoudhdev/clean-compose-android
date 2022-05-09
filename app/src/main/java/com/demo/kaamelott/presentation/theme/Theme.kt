@@ -7,35 +7,34 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
+private val LightThemeColors = lightColors(
+    primary = Red700,
+    primaryVariant = Green600,
     onPrimary = Color.White,
-    secondary = Purple200,
-    secondaryVariant = Purple700,
+    secondary = Red700,
+    secondaryVariant = Green600,
     onSecondary = Color.White,
     error = Red800,
     onBackground = Color.Black,
+
 )
 
-private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
+private val DarkThemeColors = darkColors(
+    primary = Red300,
+    primaryVariant = Red700,
     onPrimary = Color.Black,
-    secondary = Purple500,
+    secondary = Red300,
     onSecondary = Color.Black,
     error = Red200,
     onBackground = Color.White
-
 )
-
 @Composable
 fun KaamelottTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     MaterialTheme(
         colors = if (darkTheme) {
-            DarkColorPalette
+            DarkThemeColors
         } else {
-            LightColorPalette
+            LightThemeColors
         },
         typography = KaamelottTypography,
         shapes = KaamelottShapes,

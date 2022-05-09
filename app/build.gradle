@@ -119,16 +119,13 @@ dependencies {
     // Instrumentation tests
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 
-    // Robolectric dependencies
-    testImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    testImplementation "org.robolectric:robolectric:$robolectric"
-
     // Others
     implementation "androidx.startup:startup-runtime:$startup_runtime"
     implementation "com.jakewharton.timber:timber:$timber"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_json"
     implementation "androidx.window:window:$window"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
@@ -142,8 +139,4 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         // Set JVM target to 1.8
         jvmTarget = "1.8"
     }
-}
-
-tasks.withType(Test) {
-    systemProperty "robolectric.logging", "stdout"
 }

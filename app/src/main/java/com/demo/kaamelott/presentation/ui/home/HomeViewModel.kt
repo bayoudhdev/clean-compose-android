@@ -54,7 +54,7 @@ class HomeViewModel @Inject constructor(private val getRandomQuoteUseCase: GetRa
 
     init { fetchRandomQuote() }
 
-    private fun fetchRandomQuote() {
+    fun fetchRandomQuote() {
         viewModelState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             val result = getRandomQuoteUseCase(Unit)
@@ -83,5 +83,8 @@ class HomeViewModel @Inject constructor(private val getRandomQuoteUseCase: GetRa
             val errorMessages = currentUiState.errorMessages.filterNot { it.id == errorId }
             currentUiState.copy(errorMessages = errorMessages)
         }
+    }
+
+    fun navigateToQuotes(book: String, personage: String) {
     }
 }

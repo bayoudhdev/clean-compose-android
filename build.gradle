@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        core_ktx = '1.7.0'
+        core_ktx = '1.9.0-alpha03'
         compose_version = '1.2.0-alpha08'
         activity_compose = '1.4.0'
         coil_compose = '1.4.0'
