@@ -11,9 +11,14 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -78,10 +83,9 @@ private fun HomeScreenWithList(
                 elevation = if (!homeListLazyListState.isScrolled) 0.dp else 4.dp
             )
         },
-    ) { innerPadding ->
-
-        val contentModifier = Modifier.padding(innerPadding)
-        LoadingContentScreen(
+        modifier = modifier
+    ) { padding ->
+        HomeLoadingContentScreen(
             empty = when (uiState) {
                 is HomeUiState.HasRandomQuote -> false
                 is HomeUiState.NoRandomQuote -> uiState.isLoading
@@ -90,31 +94,84 @@ private fun HomeScreenWithList(
             loading = uiState.isLoading,
             onRefresh = onRefreshQuote,
             content = {
-                when (uiState) {
-                    is HomeUiState.HasRandomQuote -> hasRandomQuote(uiState, contentModifier)
-                    is HomeUiState.NoRandomQuote -> {
-                        if (uiState.errorMessages.isEmpty()) {
-                            TextButton(
-                                onClick = onRefreshQuote,
-                                modifier.fillMaxSize()
-                            ) {
-                                Text(
-                                    stringResource(id = R.string.try_again),
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                        } else {
-                            Box(contentModifier.fillMaxSize())
-                        }
-                    }
-                }
+                HomeContentScreen(
+                    uiState = uiState,
+                    hasRandomQuote = hasRandomQuote,
+                    onRefreshQuote = onRefreshQuote,
+                    modifier = Modifier.padding(padding)
+                )
             }
         )
+    }
+
+    HomeErrorContentScreen(
+        uiState = uiState,
+        onRefreshQuote = onRefreshQuote,
+        onErrorDismiss = onErrorDismiss,
+        scaffoldState = scaffoldState
+    )
+}
+
+@Composable
+private fun HomeErrorContentScreen(
+    uiState: HomeUiState,
+    onRefreshQuote: () -> Unit,
+    onErrorDismiss: (Long) -> Unit,
+    scaffoldState: ScaffoldState,
+) {
+    if (uiState.errorMessages.isNotEmpty()) {
+        val errorMessage = remember(uiState) { uiState.errorMessages[0] }
+        val errorMessageText: String = stringResource(errorMessage.messageId)
+        val retryMessageText = stringResource(id = R.string.try_again)
+
+        val onRefreshQuoteState by rememberUpdatedState(onRefreshQuote)
+        val onErrorDismissState by rememberUpdatedState(onErrorDismiss)
+
+        LaunchedEffect(errorMessageText, retryMessageText, scaffoldState) {
+            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+                message = errorMessageText,
+                actionLabel = retryMessageText
+            )
+            if (snackbarResult == SnackbarResult.ActionPerformed) {
+                onRefreshQuoteState()
+            }
+            onErrorDismissState(errorMessage.id)
+        }
     }
 }
 
 @Composable
-private fun LoadingContentScreen(
+private fun HomeContentScreen(
+    uiState: HomeUiState,
+    hasRandomQuote: @Composable (
+        uiState: HomeUiState.HasRandomQuote,
+        modifier: Modifier
+    ) -> Unit,
+    onRefreshQuote: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    when (uiState) {
+        is HomeUiState.HasRandomQuote -> hasRandomQuote(uiState, modifier)
+        is HomeUiState.NoRandomQuote -> {
+            if (uiState.errorMessages.isEmpty()) {
+                TextButton(
+                    onClick = onRefreshQuote,
+                    modifier.fillMaxSize()
+                ) {
+                    Text(
+                        stringResource(id = R.string.try_again),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            } else {
+                Box(modifier.fillMaxSize())
+            }
+        }
+    }
+}
+
+@Composable
+private fun HomeLoadingContentScreen(
     empty: Boolean,
     emptyContent: @Composable () -> Unit,
     loading: Boolean,
