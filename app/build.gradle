@@ -87,11 +87,16 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_runtime"
 
     // Compose
+    implementation "androidx.compose.runtime:runtime:$compose_version"
     implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.foundation:foundation-layout:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    implementation "androidx.compose.animation:animation:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    implementation "androidx.activity:activity-compose:$activity_compose"
 
     // Coil
     implementation "io.coil-kt:coil-compose:$coil_compose"
@@ -122,6 +127,8 @@ dependencies {
     implementation "androidx.startup:startup-runtime:$startup_runtime"
     implementation "com.jakewharton.timber:timber:$timber"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_json"
+    implementation "androidx.window:window:$window"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Kaamelott</string>
+    <string name="load_error">Can\'t get quote</string>
 </resources>
