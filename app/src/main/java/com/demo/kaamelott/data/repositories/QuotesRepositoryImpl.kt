@@ -9,4 +9,6 @@ class QuotesRepositoryImpl @Inject constructor(private val quotesDataSource: Quo
     QuotesRepository {
 
     override suspend fun getRandomQuote(): Result<QuoteDomain> = quotesDataSource.getRandomQuote()
+
+    override suspend fun getRandomQuotes(bookId: String): Result<List<QuoteDomain>> = quotesDataSource.getRandomQuotes(bookId)
 }

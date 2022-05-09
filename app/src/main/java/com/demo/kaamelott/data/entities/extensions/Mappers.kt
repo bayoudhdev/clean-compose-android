@@ -24,7 +24,7 @@ fun QuoteEntity.toDomain() = QuoteDomain(
 
 fun DetailsEntity.toDomain() = DetailsDomain(
     actor = this.actor,
-    personage = this.personage,
+    personage = this.personage.orEmpty(),
     episode = this.episode,
     author = this.author,
     season = this.season

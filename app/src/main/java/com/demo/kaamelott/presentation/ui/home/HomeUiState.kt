@@ -15,6 +15,8 @@ sealed interface HomeUiState {
 
     data class HasRandomQuote(
         val randomQuote: Quote,
+        val randomQuotes: List<Quote>,
+        val isQuoteOpen: Boolean,
         override val isLoading: Boolean,
         override val errorMessages: List<ErrorMessage>,
     ) : HomeUiState

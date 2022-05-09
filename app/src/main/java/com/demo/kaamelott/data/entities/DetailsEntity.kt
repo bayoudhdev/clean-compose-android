@@ -8,7 +8,7 @@ data class DetailsEntity(
     @SerialName("acteur")
     val actor: String,
     @SerialName("personnage")
-    val personage: String,
+    val personage: String? = null,
     @SerialName("auteur")
     val author: String,
     @SerialName("saison")

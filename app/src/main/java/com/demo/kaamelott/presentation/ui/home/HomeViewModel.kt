@@ -3,7 +3,9 @@ package com.demo.kaamelott.presentation.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.demo.kaamelott.R
+import com.demo.kaamelott.domain.interactors.BookId
 import com.demo.kaamelott.domain.interactors.GetRandomQuoteUseCase
+import com.demo.kaamelott.domain.interactors.GetRandomQuotesUseCase
 import com.demo.kaamelott.presentation.models.ErrorMessage
 import com.demo.kaamelott.presentation.models.Quote
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +20,8 @@ import javax.inject.Inject
 
 private data class HomeViewModelState(
     val randomQuote: Quote? = null,
+    val randomQuotes: List<Quote> = emptyList(),
+    val isQuoteOpen: Boolean = false,
     val isLoading: Boolean = false,
     val errorMessages: List<ErrorMessage> = emptyList(),
 ) {
@@ -32,14 +36,18 @@ private data class HomeViewModelState(
             HomeUiState.HasRandomQuote(
                 errorMessages = errorMessages,
                 isLoading = isLoading,
-                randomQuote = randomQuote
+                randomQuote = randomQuote,
+                isQuoteOpen = isQuoteOpen,
+                randomQuotes = randomQuotes
             )
         }
 }
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val getRandomQuoteUseCase: GetRandomQuoteUseCase) :
-    ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val getRandomQuoteUseCase: GetRandomQuoteUseCase,
+    private val getRandomQuotesUseCase: GetRandomQuotesUseCase
+) : ViewModel() {
 
     private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = true))
 
@@ -52,7 +60,10 @@ class HomeViewModel @Inject constructor(private val getRandomQuoteUseCase: GetRa
             viewModelState.value.toUiState()
         )
 
-    init { fetchRandomQuote() }
+    init {
+        fetchRandomQuote()
+        fetchRandomQuotes()
+    }
 
     fun fetchRandomQuote() {
         viewModelState.update { it.copy(isLoading = true) }
@@ -66,7 +77,31 @@ class HomeViewModel @Inject constructor(private val getRandomQuoteUseCase: GetRa
                     onFailure = {
                         val errorMessages = state.errorMessages + ErrorMessage(
                             id = UUID.randomUUID().mostSignificantBits,
-                            messageId = R.string.load_error
+                            messageId = R.string.load_quote_error
+                        )
+                        state.copy(errorMessages = errorMessages, isLoading = false)
+                    }
+                )
+            }
+        }
+    }
+
+    fun fetchRandomQuotes() {
+        viewModelState.update { it.copy(isLoading = true) }
+        viewModelScope.launch {
+            val result = getRandomQuotesUseCase(BookId((1..6).random().toString()))
+            viewModelState.update { state ->
+                result.fold(
+                    onSuccess = {
+                        state.copy(
+                            randomQuotes = it.getOrElse { emptyList() }.take(3),
+                            isLoading = false
+                        )
+                    },
+                    onFailure = {
+                        val errorMessages = state.errorMessages + ErrorMessage(
+                            id = UUID.randomUUID().mostSignificantBits,
+                            messageId = R.string.load_quotes_error
                         )
                         state.copy(errorMessages = errorMessages, isLoading = false)
                     }
@@ -83,11 +118,5 @@ class HomeViewModel @Inject constructor(private val getRandomQuoteUseCase: GetRa
             val errorMessages = currentUiState.errorMessages.filterNot { it.id == errorId }
             currentUiState.copy(errorMessages = errorMessages)
         }
-    }
-
-    fun navigateToQuotes(book: String, personage: String) {
-    }
-
-    fun navigateToPersonages(book: String) {
     }
 }

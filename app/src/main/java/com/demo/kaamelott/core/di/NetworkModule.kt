@@ -14,6 +14,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -23,15 +24,23 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
 
+    @Provides
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
+        HttpLoggingInterceptor().apply {
+            setLevel(HttpLoggingInterceptor.Level.BODY)
+        }
+
     @Singleton
     @Provides
     fun provideOkHttpClient(
         @ApplicationContext context: Context,
-        networkStatusInterceptor: NetworkStatusInterceptor
+        networkStatusInterceptor: NetworkStatusInterceptor,
+        httpLoggingInterceptor: HttpLoggingInterceptor,
     ) = OkHttpClient
         .Builder()
         .cache(Cache(File(context.cacheDir, "api_cache"), 50L * 1024 * 1024))
         .addInterceptor(networkStatusInterceptor)
+        .addInterceptor(httpLoggingInterceptor)
         .connectTimeout(20, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)
         .writeTimeout(20, TimeUnit.SECONDS)

@@ -10,15 +10,20 @@ import androidx.compose.runtime.getValue
 @Composable
 fun HomeRoute(
     homeViewModel: HomeViewModel,
+    navigateToQuote: (Pair<String, String>) -> Unit,
+    navigateToPersonages: (String) -> Unit,
     openDrawer: () -> Unit,
     scaffoldState: ScaffoldState = rememberScaffoldState()
 ) {
     val uiState by homeViewModel.uiState.collectAsState()
     HomeRoute(
         uiState = uiState,
-        navigateToQuotes = { homeViewModel.navigateToQuotes(it.first, it.second) },
-        navigateToPersonages = homeViewModel::navigateToPersonages,
-        onRefreshQuote = homeViewModel::fetchRandomQuote,
+        navigateToQuote = navigateToQuote,
+        navigateToPersonages = navigateToPersonages,
+        onRefreshHome = {
+            homeViewModel.fetchRandomQuote()
+            homeViewModel.fetchRandomQuotes()
+        },
         onErrorDismiss = homeViewModel::observeError,
         openDrawer = openDrawer,
         scaffoldState = scaffoldState,
@@ -28,9 +33,9 @@ fun HomeRoute(
 @Composable
 fun HomeRoute(
     uiState: HomeUiState,
-    onRefreshQuote: () -> Unit,
+    onRefreshHome: () -> Unit,
     onErrorDismiss: (Long) -> Unit,
-    navigateToQuotes: (Pair<String, String>) -> Unit,
+    navigateToQuote: (Pair<String, String>) -> Unit,
     navigateToPersonages: (String) -> Unit,
     openDrawer: () -> Unit,
     scaffoldState: ScaffoldState
@@ -38,9 +43,9 @@ fun HomeRoute(
     val homeListLazyListState = rememberLazyListState()
     HomeScreen(
         uiState = uiState,
-        onRefreshQuote = onRefreshQuote,
+        onRefreshHome = onRefreshHome,
         onErrorDismiss = onErrorDismiss,
-        navigateToQuotes = navigateToQuotes,
+        navigateToQuote = navigateToQuote,
         navigateToPersonages = navigateToPersonages,
         openDrawer = openDrawer,
         homeListLazyListState = homeListLazyListState,

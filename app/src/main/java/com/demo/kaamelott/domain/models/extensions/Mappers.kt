@@ -5,6 +5,8 @@ import com.demo.kaamelott.domain.models.QuoteDomain
 import com.demo.kaamelott.presentation.models.Metadata
 import com.demo.kaamelott.presentation.models.Quote
 
+fun List<QuoteDomain>.toModel() = this.map { it.toModel() }
+
 fun QuoteDomain.toModel() = Quote(
     quote = this.quote,
     metaData = this.information.toModel()

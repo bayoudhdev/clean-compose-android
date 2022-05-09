@@ -31,7 +31,7 @@ class KaamelottNavigationActions(navController: NavHostController) {
         }
     }
     val navigateToPersonages: () -> Unit = {
-        navController.navigate(KaamelottDestinations.PERSONAGES_ROUTE) {
+        navController.navigate("${KaamelottDestinations.PERSONAGES_ROUTE}/-1") {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }

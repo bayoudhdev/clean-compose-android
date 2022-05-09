@@ -21,18 +21,6 @@ interface QuotesService {
     suspend fun getRandomQuote(): Response<RandomQuoteEntity>
 
     /**
-     * Get all quotes
-     *
-     * Responses:
-     *  - 200: Request is successful, response contains the quotes
-     *  - 404: Unrecoverable error from the service
-     *
-     * @return [QuotesEntity]
-     */
-    @GET("/all")
-    suspend fun getAllQuotes(): Response<QuotesEntity>
-
-    /**
      * Get a random quote by personage
      *
      * Responses:
@@ -42,7 +30,7 @@ interface QuotesService {
      * @param personage name of the personage in the book
      * @return [QuoteEntity]
      */
-    @GET("/all/personnage/{personage}")
+    @GET("/api/all/personnage/{personage}")
     suspend fun getRandomQuoteByPersonage(
         @Path("personage") personage: String
     ): Response<QuoteEntity>
@@ -57,7 +45,7 @@ interface QuotesService {
      * @param personage name of the personage in the book
      * @return [QuotesEntity]
      */
-    @GET("/all/personnage/{personage}")
+    @GET("/api/all/personnage/{personage}")
     suspend fun getAllQuotesByPersonage(
         @Path("personage") personage: String
     ): Response<QuotesEntity>
@@ -72,7 +60,7 @@ interface QuotesService {
      * @param book a book number
      * @return [QuoteEntity]
      */
-    @GET("/random/livre/{book}")
+    @GET("/api/random/livre/{book}")
     suspend fun getRandomQuoteByBook(
         @Path("book") book: String
     ): Response<QuoteEntity>
@@ -87,7 +75,7 @@ interface QuotesService {
      * @param book a book number
      * @return [QuotesEntity]
      */
-    @GET("/all/livre/{book}")
+    @GET("/api/all/livre/{book}")
     suspend fun getAllQuotesByBook(
         @Path("book") book: String
     ): Response<QuotesEntity>
@@ -103,7 +91,7 @@ interface QuotesService {
      * @param personage name of the personage in the book
      * @return [QuotesEntity]
      */
-    @GET("/all/livre/{book}/personnage/{personage}")
+    @GET("/api/all/livre/{book}/personnage/{personage}")
     suspend fun getCharacterQuoteByBook(
         @Path("book") book: Int,
         @Path("personage") personage: String

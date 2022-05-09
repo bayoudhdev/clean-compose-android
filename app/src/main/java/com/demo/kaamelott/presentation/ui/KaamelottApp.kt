@@ -1,13 +1,6 @@
 package com.demo.kaamelott.presentation.ui
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalDrawer
@@ -19,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.demo.kaamelott.presentation.navigation.KaamelottDestinations
@@ -45,6 +39,7 @@ fun KaamelottApp() {
         val coroutineScope = rememberCoroutineScope()
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route ?: KaamelottDestinations.HOME_ROUTE
+
         val sizeAwareDrawerState = rememberDrawerState(DrawerValue.Closed)
 
         ModalDrawer(
@@ -56,6 +51,7 @@ fun KaamelottApp() {
                     navigateToQuotes = navigationActions.navigateToQuotes,
                     closeDrawer = { coroutineScope.launch { sizeAwareDrawerState.close() } },
                     modifier = Modifier
+                        .padding(bottom = 56.dp)
                         .statusBarsPadding()
                         .navigationBarsPadding(),
                 )
@@ -65,6 +61,7 @@ fun KaamelottApp() {
         ) {
             KaamelottNavGraph(
                 modifier = Modifier
+                    .padding(bottom = 56.dp)
                     .fillMaxSize()
                     .statusBarsPadding()
                     .windowInsetsPadding(
