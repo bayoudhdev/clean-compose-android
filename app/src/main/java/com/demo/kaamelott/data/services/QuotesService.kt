@@ -2,6 +2,7 @@ package com.demo.kaamelott.data.services
 
 import com.demo.kaamelott.data.entities.QuoteEntity
 import com.demo.kaamelott.data.entities.QuotesEntity
+import com.demo.kaamelott.data.entities.RandomQuoteEntity
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -16,8 +17,8 @@ interface QuotesService {
      *
      * @return [QuoteEntity]
      */
-    @GET("/random")
-    suspend fun getRandomQuote(): Response<QuoteEntity>
+    @GET("/api/random")
+    suspend fun getRandomQuote(): Response<RandomQuoteEntity>
 
     /**
      * Get all quotes

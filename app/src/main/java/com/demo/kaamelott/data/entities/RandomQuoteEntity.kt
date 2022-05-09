@@ -4,9 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class QuotesEntity(
+data class RandomQuoteEntity(
     @SerialName("status")
     val status: Int,
     @SerialName("citation")
-    val quotes: List<QuoteEntity> = emptyList()
+    val quote: QuoteEntity,
 )
