@@ -23,6 +23,7 @@
     <string name="quotes_title">Citations</string>
     <string name="quote_title">Citation de %s</string>
     <string name="quote_details">\" %s \"</string>
+    <string name="quotes_error_server">Aucun résultat trouvé, il y a peut-être un problème au niveau serveur</string>
 
     <!-- Dialog -->
     <string name="close">Fermer</string>

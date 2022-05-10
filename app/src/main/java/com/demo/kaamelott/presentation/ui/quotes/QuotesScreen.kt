@@ -6,6 +6,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -150,14 +151,26 @@ private fun QuotesContentScreen(
         is QuotesUiState.HasQuotes -> hasQuotes(uiState, modifier)
         is QuotesUiState.NoQuotes -> {
             if (uiState.errorMessages.isEmpty()) {
-                TextButton(
-                    onClick = onRefreshQuotes,
-                    modifier.fillMaxSize()
+                Column(
+                    modifier = modifier
+                        .padding(horizontal = 30.dp)
+                        .fillMaxSize()
+                        .wrapContentSize(align = Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        stringResource(id = R.string.try_again),
+                        text = stringResource(id = R.string.quotes_error_server),
+                        style = MaterialTheme.typography.body1,
                         textAlign = TextAlign.Center
                     )
+                    TextButton(
+                        onClick = onRefreshQuotes,
+                    ) {
+                        Text(
+                            stringResource(id = R.string.try_again),
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             } else {
                 Box(modifier.fillMaxSize())

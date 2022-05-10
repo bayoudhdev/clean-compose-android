@@ -4,7 +4,7 @@ buildscript {
         compose_version = '1.2.0-alpha08'
         activity_compose = '1.4.0'
         coil_compose = '1.4.0'
-        hilt_android = '2.40.5'
+        hilt_android = '2.41'
         navigation_compose = '1.0.0'
         hilt_compiler = '2.40.5'
         retrofit = '2.9.0'
@@ -20,11 +20,14 @@ buildscript {
         serialization_json = '1.2.2'
         window = '1.0.0'
         accompanist_version = '0.24.7-alpha'
+        turbine = '0.8.0'
+        mockk = '1.12.2'
+        coroutinesTest = '1.6.0'
     }
 
     dependencies {
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.5'
-        classpath "org.jetbrains.kotlin:kotlin-serialization:1.6.20"
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.41'
+        classpath "org.jetbrains.kotlin:kotlin-serialization:1.6.21"
     }
 }
 

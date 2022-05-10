@@ -115,6 +115,9 @@ dependencies {
     testImplementation "junit:junit:$junit"
     androidTestImplementation "androidx.test.ext:junit:$ext_junit"
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    testImplementation "io.mockk:mockk:$mockk"
+    testImplementation "app.cash.turbine:turbine:$turbine"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesTest"
 
     // Instrumentation tests
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
@@ -136,6 +139,9 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         freeCompilerArgs += '-opt-in=kotlin.RequiresOptIn'
         // Enable experimental coroutines APIs, including Flow
         freeCompilerArgs += '-opt-in=kotlin.Experimental'
+        freeCompilerArgs += '-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi'
+        freeCompilerArgs += '-Xopt-in=kotlinx.coroutines.FlowPreview'
+        freeCompilerArgs += '-Xopt-in=kotlin.ExperimentalStdlibApi'
         // Set JVM target to 1.8
         jvmTarget = "1.8"
     }

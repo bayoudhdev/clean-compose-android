@@ -22,7 +22,7 @@ class QuotesRemoteDataSource @Inject constructor(private val quotesService: Quot
         val response = quotesService.getAllQuotesByBook(bookId)
         val quotes = response.body()
 
-        return if (response.isSuccessful && !quotes?.quotes.isNullOrEmpty()) {
+        return if (response.isSuccessful) {
             Result.success(quotes?.quotes?.map { it.toDomain() }.orEmpty())
         } else {
             Result.failure(Throwable("Can't find quotes in response"))
@@ -36,7 +36,7 @@ class QuotesRemoteDataSource @Inject constructor(private val quotesService: Quot
         val response = quotesService.getQuotesByBookAndPersonage(bookId, personage)
         val quotes = response.body()
 
-        return if (response.isSuccessful && !quotes?.quotes.isNullOrEmpty()) {
+        return if (response.isSuccessful) {
             Result.success(quotes?.quotes?.map { it.toDomain() }.orEmpty())
         } else {
             Result.failure(Throwable("Can't find quotes in response"))
@@ -47,7 +47,7 @@ class QuotesRemoteDataSource @Inject constructor(private val quotesService: Quot
         val response = quotesService.getQuotesByPersonage(personage)
         val quotes = response.body()
 
-        return if (response.isSuccessful && !quotes?.quotes.isNullOrEmpty()) {
+        return if (response.isSuccessful) {
             Result.success(quotes?.quotes?.map { it.toDomain() }.orEmpty())
         } else {
             Result.failure(Throwable("Can't find quotes in response"))

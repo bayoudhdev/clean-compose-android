@@ -2,15 +2,10 @@ package com.demo.kaamelott.presentation.ui.personages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
@@ -27,6 +22,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.unit.dp
 import com.demo.kaamelott.R
 import com.demo.kaamelott.core.utils.isScrolled
+import com.demo.kaamelott.presentation.components.DividerComponent
 
 @Composable
 fun PersonagesScreen(
@@ -96,9 +92,9 @@ fun PersonageItem(
                 colorFilter = ColorFilter.tint(MaterialTheme.colors.secondary)
             )
         }
-        Divider(
+        DividerComponent(
             modifier = Modifier.padding(start = 72.dp, top = 8.dp, bottom = 8.dp),
-            color = MaterialTheme.colors.onSurface.copy(alpha = 0.1f)
+            alpha = 0.1f
         )
     }
 }

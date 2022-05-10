@@ -8,5 +8,7 @@ data class QuotesEntity(
     @SerialName("status")
     val status: Int,
     @SerialName("citation")
-    val quotes: List<QuoteEntity> = emptyList()
+    val quotes: List<QuoteEntity> = emptyList(),
+    @SerialName("error")
+    val error: String? = null
 )
