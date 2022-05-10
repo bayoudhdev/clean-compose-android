@@ -1,6 +1,6 @@
 package com.demo.kaamelott.core.di
 
-import com.demo.kaamelott.data.datasources.QuotesDataSource
+import com.demo.kaamelott.data.datasources.remote.QuotesRemoteDataSource
 import com.demo.kaamelott.data.repositories.QuotesRepositoryImpl
 import com.demo.kaamelott.data.services.QuotesService
 import com.demo.kaamelott.domain.repositories.QuotesRepository
@@ -22,6 +22,6 @@ class QuotesModule {
 
     @Provides
     @Singleton
-    fun provideQuotesRepository(quotesDataSource: QuotesDataSource): QuotesRepository =
-        QuotesRepositoryImpl(quotesDataSource = quotesDataSource)
+    fun provideQuotesRepository(quotesRemoteDataSource: QuotesRemoteDataSource): QuotesRepository =
+        QuotesRepositoryImpl(quotesRemoteDataSource = quotesRemoteDataSource)
 }

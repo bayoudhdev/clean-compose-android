@@ -1,11 +1,11 @@
-package com.demo.kaamelott.data.datasources
+package com.demo.kaamelott.data.datasources.remote
 
 import com.demo.kaamelott.data.entities.extensions.toDomain
 import com.demo.kaamelott.data.services.QuotesService
 import com.demo.kaamelott.domain.models.QuoteDomain
 import javax.inject.Inject
 
-class QuotesDataSource @Inject constructor(private val quotesService: QuotesService) {
+class QuotesRemoteDataSource @Inject constructor(private val quotesService: QuotesService) {
 
     suspend fun getRandomQuote(): Result<QuoteDomain> {
         val response = quotesService.getRandomQuote()
